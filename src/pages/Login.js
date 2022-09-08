@@ -12,14 +12,16 @@ export default class Login extends React.Component {
   }
 
   onChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
+    this.setState({ [name]: value }, () => {
+      this.validator();
+    });
   };
 
-  // validator() {
-  //   const { namePlayer, playerEmail } = this.state;
-  //   const infoInput = playerEmail.length > 0 && namePlayer.length > 0;
-  //   this.setState({ isDisable: !infoInput });
-  // }
+  validator = () => {
+    const { namePlayer, playerEmail } = this.state;
+    const infoInput = playerEmail.length > 0 && namePlayer.length > 0;
+    this.setState({ isDisable: !infoInput });
+  };
 
   render() {
     const { namePlayer, playerEmail, isDisable } = this.state;
@@ -32,6 +34,7 @@ export default class Login extends React.Component {
             id="namePlayer"
             name="namePlayer"
             value={ namePlayer }
+            placeholder="Nome"
             onChange={ this.onChange }
             data-testid="input-player-name"
           />
@@ -42,15 +45,12 @@ export default class Login extends React.Component {
             id="playerEmail"
             name="playerEmail"
             value={ playerEmail }
+            placeholder="Email"
             onChange={ this.onChange }
             data-testid="input-gravatar-email"
           />
         </label>
-        <button
-          disabled={ isDisable }
-          data-testid="btn-play"
-          type="submit"
-        >
+        <button disabled={ isDisable } data-testid="btn-play" type="submit">
           Play
         </button>
       </div>
