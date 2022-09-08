@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import fetchApTokens from '../services';
+// import saveToken from '../Local';
 
 export default class Login extends React.Component {
   constructor() {
@@ -21,6 +24,20 @@ export default class Login extends React.Component {
     const { namePlayer, playerEmail } = this.state;
     const infoInput = playerEmail.length > 0 && namePlayer.length > 0;
     this.setState({ isDisable: !infoInput });
+  };
+
+  onClick = async (event) => {
+    const { history } = this.props;
+    event.preventDefault();
+
+    const { token } = await fetchApTokens();
+
+    if (token) {
+      history.push('/games');
+      localStorage.setItem('token', token);
+    }
+
+    return null;
   };
 
   render() {
@@ -50,12 +67,24 @@ export default class Login extends React.Component {
             data-testid="input-gravatar-email"
           />
         </label>
-        <button disabled={ isDisable } data-testid="btn-play" type="submit">
+        <button
+          disabled={ isDisable }
+          data-testid="btn-play"
+          type="submit"
+          onClick={ this.onClick }
+        >
           Play
         </button>
       </div>
     );
   }
 }
+
+Login.propTypes = {
+  // dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 connect()(Login);
