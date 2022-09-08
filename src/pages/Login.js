@@ -75,6 +75,17 @@ export default class Login extends React.Component {
         >
           Play
         </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ () => {
+            const { history } = this.props;
+            history.push('/config');
+          } }
+        >
+          Configurações
+        </button>
+
       </div>
     );
   }
