@@ -10,7 +10,11 @@ const initialState = {
 const player = (state = initialState, action) => {
   switch (action.type) {
   case USER:
-    return action.value;
+    return {
+      ...state,
+      name: action.name,
+      gravatarEmail: action.email,
+    };
   default:
     return state;
   }

@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import fetchApTokens from '../services';
+import userAction from '../redux/actions/userActions';
+import store from '../redux/store';
 // import saveToken from '../Local';
 
 export default class Login extends React.Component {
@@ -28,12 +30,14 @@ export default class Login extends React.Component {
 
   onClick = async (event) => {
     const { history } = this.props;
+    const { namePlayer, playerEmail } = this.state;
     event.preventDefault();
+    store.dispatch(userAction(namePlayer, playerEmail));
 
     const { token } = await fetchApTokens();
 
     if (token) {
-      history.push('/games');
+      history.push('/game');
       localStorage.setItem('token', token);
     }
 
