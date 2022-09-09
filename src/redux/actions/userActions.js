@@ -1,5 +1,8 @@
 import { USER } from './index';
 
-const userAction = (value) => ({ type: USER, value });
+const userAction = (name, email) => ({
+  type: USER,
+  name,
+  email });
 
 export default userAction;
