@@ -1,4 +1,4 @@
-import { USER } from '../actions';
+import { PLAYER } from '../actions';
 
 const initialState = {
   name: '',
@@ -9,7 +9,7 @@ const initialState = {
 
 const player = (state = initialState, action) => {
   switch (action.type) {
-  case USER:
+  case PLAYER:
     return {
       ...state,
       name: action.name,

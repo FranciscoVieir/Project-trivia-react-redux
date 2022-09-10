@@ -4,6 +4,10 @@ body {
   padding: 0;
 }
 
+.App {
+  text-align: center;
+}
+
 .App-logo {
   height: 15vmin;
   pointer-events: none;
@@ -14,7 +18,7 @@ body {
 }
 
 .green-border {
-  border: 2px solid green;
+  border: 1px solid green;
 }
 
 @media ( prefers-reduced-motion : no-preference ) {

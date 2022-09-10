@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import fetchApTokens from '../services';
 import userAction from '../redux/actions/userActions';
 import store from '../redux/store';
-// import saveToken from '../Local';
+import { fetchApTokens } from '../services';
 
 export default class Login extends React.Component {
   constructor() {
@@ -37,11 +36,9 @@ export default class Login extends React.Component {
     const { token } = await fetchApTokens();
 
     if (token) {
-      history.push('/game');
       localStorage.setItem('token', token);
+      history.push('/game');
     }
-
-    return null;
   };
 
   render() {

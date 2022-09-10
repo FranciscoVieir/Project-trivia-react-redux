@@ -29,4 +29,4 @@ Header.propTypes = {
   email: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Header);
+export default connect(mapStateToProps)(Header);

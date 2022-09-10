@@ -1,7 +1,7 @@
-import { USER } from './index';
+import { PLAYER } from './index';
 
 const userAction = (name, email) => ({
-  type: USER,
+  type: PLAYER,
   name,
   email });
 
