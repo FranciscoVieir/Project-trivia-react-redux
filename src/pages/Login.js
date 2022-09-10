@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import fetchApTokens from '../services';
-// import saveToken from '../Local';
+import { fetchApTokens } from '../services';
 
 export default class Login extends React.Component {
   constructor() {
