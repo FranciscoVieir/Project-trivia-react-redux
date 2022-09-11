@@ -1,8 +1,8 @@
-import { PLAYER } from '../actions';
+import { PLAYER, SEND_POINTS } from '../actions';
 
 const initialState = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
 };
@@ -14,6 +14,12 @@ const player = (state = initialState, action) => {
       ...state,
       name: action.name,
       gravatarEmail: action.email,
+    };
+  case SEND_POINTS:
+    return {
+      ...state,
+      score: state.score + action.payload,
+      assertions: state.assertions + 1,
     };
   default:
     return state;

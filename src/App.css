@@ -5,6 +5,8 @@ body {
 }
 
 .App {
+  font-family: system-ui , -apple-system
+    BlinkMacSystemFont , Roboto , Oxygen , Ubuntu , Cantarell;
   text-align: center;
 }
 
@@ -60,4 +62,31 @@ body {
   40%, 60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+
+.App-body {
+  align-items: center;
+  background-color: #282c34;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: calc(7px + 2vmin);
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.App-body :nth-child( n ) {
+  margin: 10px;
+}
+
+.App-body button {
+  font-size: calc(3px + 2vmin);
+  margin: 3px;
+  padding: 5px;
+}
+
+.App-body input {
+  font-size: calc(3px + 2vmin);
+  margin: 3px;
+  padding: 5px;
 }

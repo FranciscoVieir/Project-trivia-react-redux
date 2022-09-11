@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import fetchApiQuestions from '../redux/actions/gameActions';
+import fetchApiQuestions, { sendPoints } from '../redux/actions/gameActions';
+import Header from '../components/Header';
 
 class Game extends Component {
   constructor() {
@@ -16,7 +17,7 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    console.log('didMount');
+    // console.log('didMount');
     this.requestQuestions();
     this.aleatoryNumber();
   }
@@ -43,13 +44,33 @@ class Game extends Component {
   };
 
   onClickAnswer = ({ target }) => {
-    console.log(target);
+    const { dispatch } = this.props;
+    const { timer } = this.state;
+    const difficulty = target.parentNode.parentNode.id;
+    const basePoint = 10;
+    const hard = 3;
+    const medium = 2;
+    const easy = 1;
+    const answerType = target.className;
+    let points = basePoint;
     this.setState({
       showNextBtn: true,
     });
+    if (answerType === 'correct') {
+      if (difficulty === 'hard') {
+        points += (timer * hard);
+      } else if (difficulty === 'medium') {
+        points += (timer * medium);
+      } else if (difficulty === 'easy') {
+        points += (timer * easy);
+      }
+      dispatch(sendPoints(points));
+    }
   };
 
   onClickNext = () => {
+    const { history } = this.props;
+    const lastQuestion = 5;
     let { count } = this.state;
     clearInterval(this.intervalID);
     this.aleatoryNumber();
@@ -60,25 +81,31 @@ class Game extends Component {
     }, () => {
       this.answerTimer();
     });
+    if (count === lastQuestion) {
+      history.push('/feedback');
+    }
   };
 
   aleatoryNumber = () => {
     const NUM = 10;
     const aleatory = Math.floor(Math.random() * NUM + 1);
     this.setState({ aleatory });
+    console.log(aleatory)
   };
 
   render() {
+    // console.log('render');
     const { game } = this.props;
-    console.log('render');
     const { isDisable, timer, showNextBtn, count, aleatory } = this.state;
     const questions = game
       .map((
-        { question, category, correct_answer: correct, incorrect_answers: incorrect },
+        { question, category, correct_answer: correct,
+          incorrect_answers: incorrect, difficulty },
         index,
       ) => (
         <div
           key={ index }
+          id={ difficulty }
         >
           <p
             data-testid="question-category"
@@ -97,6 +124,7 @@ class Game extends Component {
                   <button
                     type="button"
                     data-testid="correct-answer"
+                    className="correct"
                     disabled={ isDisable }
                     onClick={ this.onClickAnswer }
                   >
@@ -110,6 +138,7 @@ class Game extends Component {
                 key={ i }
                 type="button"
                 data-testid={ `wrong-answer-${index}` }
+                className="wrong"
                 disabled={ isDisable }
                 onClick={ this.onClickAnswer }
               >
@@ -121,6 +150,7 @@ class Game extends Component {
                   <button
                     type="button"
                     data-testid="correct-answer"
+                    className="correct"
                     disabled={ isDisable }
                     onClick={ this.onClickAnswer }
                   >
@@ -135,6 +165,7 @@ class Game extends Component {
 
     return (
       <div>
+        <Header />
         <div>
           <h1>Games</h1>
           {questions[count]}

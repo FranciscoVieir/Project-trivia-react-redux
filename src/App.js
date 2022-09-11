@@ -5,23 +5,22 @@ import './App.css';
 import Login from './pages/Login';
 import Game from './pages/Game';
 import Configuracoes from './pages/Config';
-import Header from './components/Header';
+import Feedback from './pages/Feedback';
 
 function App() {
   return (
     <div>
       <div className="App">
-        <header className="App-header">
+        <div className="App-body">
           <img src={ logo } className="App-logo" alt="logo" />
-          <p>SUA VEZ</p>
-          <Header />
-        </header>
+          <Switch>
+            <Route exact path="/game" component={ Game } />
+            <Route exact path="/" component={ Login } />
+            <Route exact path="/config" component={ Configuracoes } />
+            <Route exact path="/feedback" component={ Feedback } />
+          </Switch>
+        </div>
       </div>
-      <Switch>
-        <Route exact path="/game" component={ Game } />
-        <Route exact path="/" component={ Login } />
-        <Route exact path="/config" component={ Configuracoes } />
-      </Switch>
     </div>
   );
 }
