@@ -90,7 +90,6 @@ class Game extends Component {
     const NUM = 10;
     const aleatory = Math.floor(Math.random() * NUM + 1);
     this.setState({ aleatory });
-    console.log(aleatory)
   };
 
   render() {
