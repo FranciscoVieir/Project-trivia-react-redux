@@ -43,6 +43,7 @@ class Game extends Component {
   };
 
   onClickAnswer = ({ target }) => {
+    console.log(target);
     this.setState({
       showNextBtn: true,
     });
