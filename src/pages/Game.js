@@ -1,30 +1,110 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import fetchApiQuestions from '../redux/actions/gameActions';
+import fetchApiQuestions, { sendPoints } from '../redux/actions/gameActions';
+import Header from '../components/Header';
 
 class Game extends Component {
-  componentDidMount() {
-    this.requestQuestions();
+  constructor() {
+    super();
+    this.state = {
+      isDisable: false,
+      timer: 30,
+      showNextBtn: false,
+      count: 0,
+      aleatory: 0,
+    };
   }
+
+  componentDidMount() {
+    // console.log('didMount');
+    this.requestQuestions();
+    this.aleatoryNumber();
+  }
+
+  answerTimer = () => {
+    const { timer } = this.state;
+    const oneSecond = 1000;
+    let time = timer;
+    this.intervalID = setInterval(() => {
+      if (time > 0) {
+        time -= 1;
+        this.setState({ timer: time });
+      } else if (time === 0) {
+        this.setState({ isDisable: true });
+      }
+    }, oneSecond);
+  };
 
   requestQuestions = () => {
     const { dispatch, history } = this.props;
     const token = localStorage.getItem('token');
     dispatch(fetchApiQuestions(token, history));
+    this.answerTimer();
+  };
+
+  onClickAnswer = ({ target }) => {
+    const { dispatch } = this.props;
+    const { timer } = this.state;
+    const difficulty = target.parentNode.parentNode.id;
+    const basePoint = 10;
+    const hard = 3;
+    const medium = 2;
+    const easy = 1;
+    const answerType = target.className;
+    let points = basePoint;
+    this.setState({
+      showNextBtn: true,
+    });
+    if (answerType === 'correct') {
+      if (difficulty === 'hard') {
+        points += (timer * hard);
+      } else if (difficulty === 'medium') {
+        points += (timer * medium);
+      } else if (difficulty === 'easy') {
+        points += (timer * easy);
+      }
+      dispatch(sendPoints(points));
+    }
+  };
+
+  onClickNext = () => {
+    const { history } = this.props;
+    const lastQuestion = 5;
+    let { count } = this.state;
+    clearInterval(this.intervalID);
+    this.aleatoryNumber();
+    this.setState({
+      count: count += 1,
+      showNextBtn: false,
+      timer: 30,
+    }, () => {
+      this.answerTimer();
+    });
+    if (count === lastQuestion) {
+      history.push('/feedback');
+    }
+  };
+
+  aleatoryNumber = () => {
+    const NUM = 10;
+    const aleatory = Math.floor(Math.random() * NUM + 1);
+    this.setState({ aleatory });
   };
 
   render() {
+    // console.log('render');
     const { game } = this.props;
-    const NUM = 10;
-    const aleatory = Math.floor(Math.random() * NUM + 1);
+    const { isDisable, timer, showNextBtn, count, aleatory } = this.state;
     const questions = game
       .map((
-        { question, category, correct_answer: correct, incorrect_answers: incorrect },
+        { question, category, correct_answer: correct,
+          incorrect_answers: incorrect, difficulty },
         index,
       ) => (
         <div
           key={ index }
+          id={ difficulty }
         >
           <p
             data-testid="question-category"
@@ -43,6 +123,9 @@ class Game extends Component {
                   <button
                     type="button"
                     data-testid="correct-answer"
+                    className="correct"
+                    disabled={ isDisable }
+                    onClick={ this.onClickAnswer }
                   >
                     {correct}
                   </button>
@@ -54,6 +137,9 @@ class Game extends Component {
                 key={ i }
                 type="button"
                 data-testid={ `wrong-answer-${index}` }
+                className="wrong"
+                disabled={ isDisable }
+                onClick={ this.onClickAnswer }
               >
                 {array}
               </button>))}
@@ -63,6 +149,9 @@ class Game extends Component {
                   <button
                     type="button"
                     data-testid="correct-answer"
+                    className="correct"
+                    disabled={ isDisable }
+                    onClick={ this.onClickAnswer }
                   >
                     {correct}
                   </button>
@@ -75,10 +164,21 @@ class Game extends Component {
 
     return (
       <div>
+        <Header />
         <div>
           <h1>Games</h1>
-          {questions[0]}
+          {questions[count]}
+          <p>{timer}</p>
         </div>
+        {showNextBtn && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.onClickNext }
+          >
+            Next
+          </button>
+        )}
       </div>
     );
   }
