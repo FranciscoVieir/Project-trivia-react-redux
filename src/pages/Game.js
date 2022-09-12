@@ -2,11 +2,29 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetchApiQuestions from '../redux/actions/gameActions';
+// import Button from '../components/Button';
 
 class Game extends Component {
   componentDidMount() {
     this.requestQuestions();
   }
+
+  onClickButton = (event) => {
+    // const { name } = event;
+    // const { results: { correct_answer: correct } } = this.props;
+    console.log(event.target.name);
+    // event.target.style.border = ('3px solid rgb(6, 240, 15)');
+    // console.log(e.target.name);
+    // console.log(correct);
+    if (event.target.name === 'correct-answer') {
+      event.target.style.border = ('3px solid rgb(6, 240, 15)');
+      console.log('acertei');
+    }
+    if (event.target.name === 'wrong-answer') {
+      event.target.style.border = ('3px solid rgb(255, 0, 0)');
+      console.log('errei');
+    }
+  };
 
   requestQuestions = () => {
     const { dispatch, history } = this.props;
@@ -53,7 +71,10 @@ class Game extends Component {
               <button
                 key={ i }
                 type="button"
+                name="wrong-answer"
                 data-testid={ `wrong-answer-${index}` }
+                onClick={ (e) => this.onClickButton(e) }
+
               >
                 {array}
               </button>))}
@@ -62,9 +83,12 @@ class Game extends Component {
                 ? (
                   <button
                     type="button"
+                    name="correct-answer"
                     data-testid="correct-answer"
+                    onClick={ (e) => this.onClickButton(e) }
                   >
                     {correct}
+
                   </button>
                 )
                 : (<div />)
