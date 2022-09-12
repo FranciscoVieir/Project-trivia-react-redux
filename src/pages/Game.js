@@ -71,6 +71,7 @@ class Game extends Component {
   };
 
   onClickNext = () => {
+    this.setState({ teste: false });
     const { history } = this.props;
     const lastQuestion = 5;
     let { count } = this.state;
