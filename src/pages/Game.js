@@ -2,28 +2,28 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetchApiQuestions from '../redux/actions/gameActions';
-// import Button from '../components/Button';
 
 class Game extends Component {
+  constructor() {
+    super();
+    this.state = {
+      teste: false,
+    };
+  }
+
   componentDidMount() {
     this.requestQuestions();
   }
 
-  onClickButton = (event) => {
-    // const { name } = event;
-    // const { results: { correct_answer: correct } } = this.props;
-    console.log(event.target.name);
-    // event.target.style.border = ('3px solid rgb(6, 240, 15)');
-    // console.log(e.target.name);
-    // console.log(correct);
-    if (event.target.name === 'correct-answer') {
-      event.target.style.border = ('3px solid rgb(6, 240, 15)');
-      console.log('acertei');
-    }
-    if (event.target.name === 'wrong-answer') {
-      event.target.style.border = ('3px solid rgb(255, 0, 0)');
-      console.log('errei');
-    }
+  onClickButton = () => {
+    this.setState({ teste: true });
+
+    // if (event.target.name === 'correct-answer') {
+    //   event.target.style.border = ('3px solid rgb(6, 240, 15)');
+    // }
+    // if (event.target.name === 'wrong-answer') {
+    //   event.target.style.border = ('3px solid rgb(255, 0, 0)');
+    // }
   };
 
   requestQuestions = () => {
@@ -34,6 +34,7 @@ class Game extends Component {
 
   render() {
     const { game } = this.props;
+    const { teste } = this.state;
     const NUM = 10;
     const aleatory = Math.floor(Math.random() * NUM + 1);
     const questions = game
@@ -60,7 +61,10 @@ class Game extends Component {
                 ? (
                   <button
                     type="button"
+                    name="correct-answer"
+                    style={ { border: teste ? '3px solid rgb(6, 240, 15)' : '' } }
                     data-testid="correct-answer"
+                    onClick={ this.onClickButton }
                   >
                     {correct}
                   </button>
@@ -72,8 +76,9 @@ class Game extends Component {
                 key={ i }
                 type="button"
                 name="wrong-answer"
+                style={ { border: teste ? '3px solid rgb(255, 0, 0)' : '' } }
                 data-testid={ `wrong-answer-${index}` }
-                onClick={ (e) => this.onClickButton(e) }
+                onClick={ this.onClickButton }
 
               >
                 {array}
@@ -84,6 +89,7 @@ class Game extends Component {
                   <button
                     type="button"
                     name="correct-answer"
+                    style={ { border: teste ? '3px solid rgb(6, 240, 15)' : '' } }
                     data-testid="correct-answer"
                     onClick={ (e) => this.onClickButton(e) }
                   >
