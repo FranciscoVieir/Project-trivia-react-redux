@@ -1,6 +1,6 @@
 import React from "react";
 import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from '../App'
 
@@ -64,9 +64,12 @@ describe('Testando componente Login', () => {
 
         userEvent.type(inputEmail, testEmail);
         userEvent.type(inputName, testName);
+
         userEvent.click(playBtn);
 
-        // expect(history.location.pathname).toBe('/games');
+        await (waitFor(() => expect(playBtn).not.toBeInTheDocument(), {timeout:5000}));
+
+        expect(history.location.pathname).toBe('/game');
     });
     it('6-O botão de configurações é renderizado na tela', () => {
         renderWithRouterAndRedux(<App />);
