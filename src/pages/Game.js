@@ -13,6 +13,7 @@ class Game extends Component {
       showNextBtn: false,
       count: 0,
       aleatory: 0,
+      teste: false,
     };
   }
 
@@ -44,6 +45,7 @@ class Game extends Component {
   };
 
   onClickAnswer = ({ target }) => {
+    this.setState({ teste: true });
     const { dispatch } = this.props;
     const { timer } = this.state;
     const difficulty = target.parentNode.parentNode.id;
@@ -93,6 +95,7 @@ class Game extends Component {
   };
 
   render() {
+    const { teste } = this.state;
     // console.log('render');
     const { game } = this.props;
     const { isDisable, timer, showNextBtn, count, aleatory } = this.state;
@@ -122,6 +125,8 @@ class Game extends Component {
                 ? (
                   <button
                     type="button"
+                    name="correct-answer"
+                    style={ { border: teste ? '3px solid rgb(6, 240, 15)' : '' } }
                     data-testid="correct-answer"
                     className="correct"
                     disabled={ isDisable }
@@ -136,10 +141,13 @@ class Game extends Component {
               <button
                 key={ i }
                 type="button"
+                name="wrong-answer"
+                style={ { border: teste ? '3px solid rgb(255, 0, 0)' : '' } }
                 data-testid={ `wrong-answer-${index}` }
                 className="wrong"
                 disabled={ isDisable }
                 onClick={ this.onClickAnswer }
+
               >
                 {array}
               </button>))}
@@ -148,12 +156,15 @@ class Game extends Component {
                 ? (
                   <button
                     type="button"
+                    name="correct-answer"
+                    style={ { border: teste ? '3px solid rgb(6, 240, 15)' : '' } }
                     data-testid="correct-answer"
                     className="correct"
                     disabled={ isDisable }
                     onClick={ this.onClickAnswer }
                   >
                     {correct}
+
                   </button>
                 )
                 : (<div />)
