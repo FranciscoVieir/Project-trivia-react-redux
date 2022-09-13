@@ -1,4 +1,4 @@
-import { PLAYER, SEND_POINTS } from '../actions';
+import { PLAYER, RESET_POINTS, SEND_POINTS } from '../actions';
 
 const initialState = {
   name: '',
@@ -20,6 +20,12 @@ const player = (state = initialState, action) => {
       ...state,
       score: state.score + action.payload,
       assertions: state.assertions + 1,
+    };
+  case RESET_POINTS:
+    return {
+      ...state,
+      score: action.payload,
+
     };
   default:
     return state;
