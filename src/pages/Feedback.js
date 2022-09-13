@@ -2,10 +2,30 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import { resetPoints } from '../redux/actions/gameActions';
 
 class Feedback extends Component {
+  rankingButton = () => {
+    const { history, name, picture, score, dispatch } = this.props;
+    history.push('/ranking');
+    const arr = [{
+      name,
+      score,
+      picture,
+    }];
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    if (!ranking) {
+      localStorage.setItem('ranking', JSON.stringify(arr));
+    } else if (ranking) {
+      const newArray = [...ranking, arr[0]];
+      newArray.sort((a, b) => b.score - a.score);
+      localStorage.setItem('ranking', JSON.stringify(newArray));
+    }
+    dispatch(resetPoints());
+  };
+
   render() {
-    const { assertions, score, history } = this.props;
+    const { assertions, score, history, dispatch } = this.props;
     const feedbackNumber = 3;
     const feedback = () => {
       if (assertions < feedbackNumber) {
@@ -22,7 +42,10 @@ class Feedback extends Component {
         <p data-testid="feedback-text">{feedback()}</p>
         <button
           type="button"
-          onClick={ () => history.push('/') }
+          onClick={ () => {
+            dispatch(resetPoints());
+            history.push('/');
+          } }
           data-testid="btn-play-again"
         >
           Play Again
@@ -30,7 +53,7 @@ class Feedback extends Component {
         <button
           type="button"
           data-testid="btn-ranking"
-          onClick={ () => history.push('/ranking') }
+          onClick={ this.rankingButton }
         >
           Ranking
         </button>
@@ -42,6 +65,8 @@ class Feedback extends Component {
 const mapStateToProps = (state) => ({
   assertions: state.player.assertions,
   score: state.player.score,
+  name: state.player.name,
+  picture: state.player.gravatarEmail,
 });
 
 Feedback.propTypes = {

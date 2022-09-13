@@ -1,10 +1,11 @@
-import { REQUEST_QUESTIONS, SAVED_QUESTIONS, SEND_POINTS } from '.';
+import { REQUEST_QUESTIONS, RESET_POINTS, SAVED_QUESTIONS, SEND_POINTS } from '.';
 import { getApiQuestions } from '../../services';
 
 const requestApiQuestions = () => ({ type: REQUEST_QUESTIONS });
 const savedApiQuestions = (response) => ({ type: SAVED_QUESTIONS, payload: response });
 // const failedApiQuestions = (error) => ({ type: FAILED_QUESTIONS, payload: error });
 export const sendPoints = (points) => ({ type: SEND_POINTS, payload: points });
+export const resetPoints = () => ({ type: RESET_POINTS, payload: 0 });
 
 export default function fetchApiQuestions(tokens, history) {
   return async (dispatch) => {
