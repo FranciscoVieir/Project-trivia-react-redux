@@ -66,5 +66,35 @@ describe('Testando a página de Feedback', () => {
     const message = screen.getByText(/Well Done!/i);
     expect(message).toBeInTheDocument()
   });
+
+  describe('', () => {
+    // jest.spyOn(Storage.prototype, 'setItem');
+    // Storage.prototype.setItem = jest.fn();
+    // const localStorageMock = {
+    //   getItem: jest.fn(),
+    //   setItem: jest.fn(),
+    //   clear: jest.fn()
+    // };
+    // global.localStorage = localStorageMock;
+    // const fakeAxios = {
+    //   get: jest.fn(() => Promise.resolve({ data: "Richard" }))
+    // };
+
+    // beforeEach(() => {
+    //   Object.defineProperty(window, "localStorage", {
+    //     value: {
+    //       getItem: jest.fn(() => null),
+    //       setItem: jest.fn(() => null)
+    //     },
+    //     writable: true
+    //   });
+    // });
+
+    it('Testa se o local storage contêm algum objeto', () => {
+      const { history } = renderWithRouterAndRedux(<App />, INITIAL_STATE, "/feedback");
+
+      expect(localStorage.getItem).toBeCalled()
+    });
+  });
 })
   
